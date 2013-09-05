@@ -1,0 +1,16 @@
+Package: name_1
+Description: WYSIWYG word processor based on GTK2/GNOME2
+ AbiWord is the first application of a complete, open source office
+ suite. The upstream source includes cross-platform support for Win32,
+ BeOS, and QNX as well as GTK+ on Unix.
+ .
+ This package contains the AbiWord binary built with GTK2/GNOME2.
+
+Package: name_2
+Description: WYSIWYG word processor based on GTK2/GNOME2
+ AbiWord is the first application of a complete, open source office
+ suite. The upstream source includes cross-platform support for Win32,
+ BeOS, and QNX as well as GTK+ on Unix.
+ .
+ This package contains the AbiWord binary built with GTK2/GNOME2.
+Version: version_2

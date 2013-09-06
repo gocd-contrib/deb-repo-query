@@ -3,25 +3,30 @@ package com.tw.pkg.deb.repo;
 import com.tw.pkg.deb.db.PackageDAO;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 public class DebianRepoQuery {
     private String packagesZipURL;
     private String rootFolder;
     private String databaseFilePath;
+    private DebianRepository debianRepository;
     private PackageDAO packageDAO;
 
-    public DebianRepoQuery(String packagesZipURL) {
+    public DebianRepoQuery(String packagesZipURL) throws Exception {
         this.packagesZipURL = packagesZipURL;
         this.rootFolder = System.getProperty("java.io.tmpdir") + packagesZipURL.hashCode();
         System.out.println("root dir: " + rootFolder);
         this.databaseFilePath = rootFolder + File.separator + "cache.db";
         this.packageDAO = new PackageDAO(databaseFilePath);
+        this.debianRepository = new DebianRepository(packagesZipURL, rootFolder);
+    }
+
+    PackageDAO getPackageDAO() {
+        return packageDAO;
     }
 
     public void updateCacheWithUpstreamData() throws Exception {
-        DebianRepository debianRepository = new DebianRepository(packagesZipURL, rootFolder);
-
         if (!debianRepository.isRepositoryValid()) {
             System.out.println("invalid repository!");
             System.exit(0);
@@ -56,6 +61,15 @@ public class DebianRepoQuery {
     }
 
     public List<DebianPackage> getDebianPackagesFor(String packageName, String versionSpec, String architecture) throws Exception {
-        return packageDAO.getPackagesBy_Name_Version_Architecture(packageName, versionSpec, architecture);
+        List<DebianPackage> packages = packageDAO.getPackagesBy_Name_Version_Architecture(packageName, versionSpec, architecture);
+        if (!packages.isEmpty()) {
+            for (DebianPackage current : packages) {
+                current.parseVersion();
+            }
+
+            Collections.sort(packages);
+            Collections.reverse(packages);
+        }
+        return packages;
     }
 }

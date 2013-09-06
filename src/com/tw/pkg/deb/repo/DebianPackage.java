@@ -1,6 +1,8 @@
 package com.tw.pkg.deb.repo;
 
-public class DebianPackage {
+import com.tw.pkg.version.Version;
+
+public class DebianPackage implements Comparable<DebianPackage> {
     private long id;
     private String name;
     private String version;
@@ -16,6 +18,7 @@ public class DebianPackage {
     private String conflicts;
     private String section;
     private String priority;
+    private Version parsedVersion;
 
     public long getId() {
         return id;
@@ -135,5 +138,13 @@ public class DebianPackage {
 
     public void setPriority(String priority) {
         this.priority = priority;
+    }
+
+    public void parseVersion() {
+        this.parsedVersion = new Version(this.version);
+    }
+
+    public int compareTo(DebianPackage that) {
+        return this.parsedVersion.compareTo(that.parsedVersion);
     }
 }

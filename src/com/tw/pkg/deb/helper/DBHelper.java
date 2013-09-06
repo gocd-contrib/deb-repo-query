@@ -22,83 +22,35 @@ public class DBHelper {
     }
 
     public static boolean equals(DebianPackage thisObj, DebianPackage thatObj) {
-        if (thisObj.getConflicts() == null) {
-            if (thatObj.getConflicts() != null)
-                return false;
-        } else if (!thisObj.getConflicts().equals(thatObj.getConflicts()))
+        if (thisObj.getArchitecture() != null ? !thisObj.getArchitecture().equals(thatObj.getArchitecture()) : thatObj.getArchitecture() != null)
+            return false;
+        if (thisObj.getConflicts() != null ? !thisObj.getConflicts().equals(thatObj.getConflicts()) : thatObj.getConflicts() != null)
+            return false;
+        if (thisObj.getFilename() != null ? !thisObj.getFilename().equals(thatObj.getFilename()) : thatObj.getFilename() != null)
+            return false;
+        if (thisObj.getInstalledSize() != null ? !thisObj.getInstalledSize().equals(thatObj.getInstalledSize()) : thatObj.getInstalledSize() != null)
+            return false;
+        if (thisObj.getMaintainer() != null ? !thisObj.getMaintainer().equals(thatObj.getMaintainer()) : thatObj.getMaintainer() != null)
+            return false;
+        if (thisObj.getMd5sum() != null ? !thisObj.getMd5sum().equals(thatObj.getMd5sum()) : thatObj.getMd5sum() != null)
+            return false;
+        if (thisObj.getName() != null ? !thisObj.getName().equals(thatObj.getName()) : thatObj.getName() != null)
+            return false;
+        if (thisObj.getPriority() != null ? !thisObj.getPriority().equals(thatObj.getPriority()) : thatObj.getPriority() != null)
+            return false;
+        if (thisObj.getReplaces() != null ? !thisObj.getReplaces().equals(thatObj.getReplaces()) : thatObj.getReplaces() != null)
+            return false;
+        if (thisObj.getSection() != null ? !thisObj.getSection().equals(thatObj.getSection()) : thatObj.getSection() != null)
+            return false;
+        if (thisObj.getSha1() != null ? !thisObj.getSha1().equals(thatObj.getSha1()) : thatObj.getSha1() != null)
+            return false;
+        if (thisObj.getSha256() != null ? !thisObj.getSha256().equals(thatObj.getSha256()) : thatObj.getSha256() != null)
+            return false;
+        if (thisObj.getSize() != null ? !thisObj.getSize().equals(thatObj.getSize()) : thatObj.getSize() != null)
+            return false;
+        if (thisObj.getVersion() != null ? !thisObj.getVersion().equals(thatObj.getVersion()) : thatObj.getVersion() != null)
             return false;
 
-        if (thisObj.getFilename() == null) {
-            if (thatObj.getFilename() != null)
-                return false;
-        } else if (!thisObj.getFilename().equals(thatObj.getFilename()))
-            return false;
-
-        if (thisObj.getInstalledSize() == null) {
-            if (thatObj.getInstalledSize() != null)
-                return false;
-        } else if (!thisObj.getInstalledSize().equals(thatObj.getInstalledSize()))
-            return false;
-
-        if (thisObj.getMaintainer() == null) {
-            if (thatObj.getMaintainer() != null)
-                return false;
-        } else if (!thisObj.getMaintainer().equals(thatObj.getMaintainer()))
-            return false;
-
-        if (thisObj.getMd5sum() == null) {
-            if (thatObj.getMd5sum() != null)
-                return false;
-        } else if (!thisObj.getMd5sum().equals(thatObj.getMd5sum()))
-            return false;
-
-        if (thisObj.getName() == null) {
-            if (thatObj.getName() != null)
-                return false;
-        } else if (!thisObj.getName().equals(thatObj.getName()))
-            return false;
-
-        if (thisObj.getPriority() == null) {
-            if (thatObj.getPriority() != null)
-                return false;
-        } else if (!thisObj.getPriority().equals(thatObj.getPriority()))
-            return false;
-
-        if (thisObj.getReplaces() == null) {
-            if (thatObj.getReplaces() != null)
-                return false;
-        } else if (!thisObj.getReplaces().equals(thatObj.getReplaces()))
-            return false;
-
-        if (thisObj.getSection() == null) {
-            if (thatObj.getSection() != null)
-                return false;
-        } else if (!thisObj.getSection().equals(thatObj.getSection()))
-            return false;
-
-        if (thisObj.getSha1() == null) {
-            if (thatObj.getSha1() != null)
-                return false;
-        } else if (!thisObj.getSha1().equals(thatObj.getSha1()))
-            return false;
-
-        if (thisObj.getSha256() == null) {
-            if (thatObj.getSha256() != null)
-                return false;
-        } else if (!thisObj.getSha256().equals(thatObj.getSha256()))
-            return false;
-
-        if (thisObj.getSize() == null) {
-            if (thatObj.getSize() != null)
-                return false;
-        } else if (!thisObj.getSize().equals(thatObj.getSize()))
-            return false;
-
-        if (thisObj.getVersion() == null) {
-            if (thatObj.getVersion() != null)
-                return false;
-        } else if (!thisObj.getVersion().equals(thatObj.getVersion()))
-            return false;
         return true;
     }
 }

@@ -8,12 +8,17 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
-            System.out.println("usage: java -jar db-repo-query <uri> [<package-spec>] [<architecture>]");
-            System.out.println("sample: java -jar db-repo-query http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64 gcc");
+            System.out.println("usage: java -jar deb-repo-query-with-dependencies.jar <uri> [<version-spec>] [<architecture>]");
+            System.out.println("sample: java -jar deb-repo-query-with-dependencies.jar http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64 gcc [4.4%] [amd64]");
             System.exit(0);
         }
 
-        String packagesZipURL = args[0] + "/Packages.gz";
+        String packagesZipURL = null;
+        if (args[0].endsWith("/")) {
+            packagesZipURL = args[0] + "Packages.gz";
+        } else {
+            packagesZipURL = args[0] + "/Packages.gz";
+        }
         String packageName = args[1];
         String versionSpec = null;
         if (args.length > 2) {

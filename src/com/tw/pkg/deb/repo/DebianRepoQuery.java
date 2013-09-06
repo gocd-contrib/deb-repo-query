@@ -7,19 +7,16 @@ import java.util.Collections;
 import java.util.List;
 
 public class DebianRepoQuery {
-    private String packagesZipURL;
-    private String rootFolder;
-    private String databaseFilePath;
     private DebianRepository debianRepository;
     private PackageDAO packageDAO;
 
     public DebianRepoQuery(String packagesZipURL) throws Exception {
-        this.packagesZipURL = packagesZipURL;
-        this.rootFolder = System.getProperty("java.io.tmpdir") + packagesZipURL.hashCode();
+        String rootFolder = System.getProperty("java.io.tmpdir") + packagesZipURL.hashCode();
         System.out.println("root dir: " + rootFolder);
-        this.databaseFilePath = rootFolder + File.separator + "cache.db";
-        this.packageDAO = new PackageDAO(databaseFilePath);
+        String databaseFilePath = rootFolder + File.separator + "cache.db";
+
         this.debianRepository = new DebianRepository(packagesZipURL, rootFolder);
+        this.packageDAO = new PackageDAO(databaseFilePath);
     }
 
     PackageDAO getPackageDAO() {
@@ -45,10 +42,10 @@ public class DebianRepoQuery {
                 packageDAO.updateIfRequired(allPackages);
             } else {
                 System.out.println("no cache found. populating all data...");
-                int i = 0;
-                for (DebianPackage currentPackage : allPackages) {
+                for (int i = 0; i < allPackages.size(); i++) {
+                    DebianPackage currentPackage = allPackages.get(i);
                     packageDAO.insert(currentPackage);
-                    i++;
+
                     if (i % 1000 == 0) {
                         System.out.println("processed: " + i + " of " + packageCount);
                     }

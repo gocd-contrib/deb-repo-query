@@ -25,17 +25,19 @@ public class DebianRepository {
         super();
         this.packagesZipURL = packagesZipURL;
         this.rootDirectory = rootDirectory;
+
         this.downloadDirectory = this.rootDirectory + File.separator + "download";
         this.packagesFilePath = this.downloadDirectory + File.separator + "Packages.gz";
         this.unzippedPackagesFilePath = this.downloadDirectory + File.separator + "Packages";
         this.lastKnowDateStoreFilePath = this.downloadDirectory + File.separator + "last-known-modification-time";
 
-        new File(this.rootDirectory).mkdirs();
-        new File(this.downloadDirectory).mkdirs();
         if (new File(this.lastKnowDateStoreFilePath).exists()) {
             String dateStr = FileUtils.readFileToString(new File(this.lastKnowDateStoreFilePath));
-            knownDate = Long.parseLong(dateStr);
+            this.knownDate = Long.parseLong(dateStr);
         }
+
+        new File(this.rootDirectory).mkdirs();
+        new File(this.downloadDirectory).mkdirs();
     }
 
     void setKnownDate(long knownDate) {

@@ -29,13 +29,15 @@ public class PackageDAO {
             statement = connection.createStatement();
             statement.executeUpdate(sql);
         } finally {
+            if (statement != null)
+                statement.close();
             if (connection != null)
                 connection.close();
         }
     }
 
     public void createTableIfNotExists() throws Exception {
-        executeUpdateQuery("CREATE TABLE IF NOT EXISTS package (" + "id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, priority STRING, section STRING, "
+        executeUpdateQuery("CREATE TABLE IF NOT EXISTS package (id INTEGER PRIMARY KEY AUTOINCREMENT, name STRING, priority STRING, section STRING, "
                 + "installedSize STRING, maintainer STRING, architecture STRING, version STRING, replaces STRING, "
                 + "conflicts STRING, filename STRING, size STRING, md5sum STRING, sha1 STRING, sha256 STRING)");
     }
@@ -62,6 +64,8 @@ public class PackageDAO {
             statement.setString(14, debPkg.getSha256());
             statement.executeUpdate();
         } finally {
+            if (statement != null)
+                statement.close();
             if (connection != null)
                 connection.close();
         }
@@ -90,6 +94,8 @@ public class PackageDAO {
             statement.setLong(15, debPkg.getId());
             statement.executeUpdate();
         } finally {
+            if (statement != null)
+                statement.close();
             if (connection != null)
                 connection.close();
         }
@@ -139,14 +145,17 @@ public class PackageDAO {
     public List<DebianPackage> getPackagesForQuery(String sql) throws Exception {
         List<DebianPackage> debianPackages = new ArrayList<DebianPackage>();
         Connection connection = getConnection();
+        Statement statement = null;
         try {
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
                 DebianPackage debPkg = getDebianPackageFromResultSet(rs);
                 debianPackages.add(debPkg);
             }
         } finally {
+            if (statement != null)
+                statement.close();
             if (connection != null)
                 connection.close();
         }
@@ -175,13 +184,16 @@ public class PackageDAO {
 
     public int getPackageCount() throws Exception {
         Connection connection = getConnection();
+        Statement statement = null;
         try {
-            Statement statement = connection.createStatement();
+            statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT COUNT(*) FROM package");
             while (rs.next()) {
                 return rs.getInt(1);
             }
         } finally {
+            if (statement != null)
+                statement.close();
             if (connection != null)
                 connection.close();
         }

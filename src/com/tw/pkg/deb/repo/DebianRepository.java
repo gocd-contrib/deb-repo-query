@@ -17,7 +17,6 @@ public class DebianRepository {
     private String lastKnowDateStoreFilePath;
     private long knownDate;
     private String rootDirectory;
-    private String downloadDirectory;
     private String packagesFilePath;
     private String unzippedPackagesFilePath;
 
@@ -26,18 +25,16 @@ public class DebianRepository {
         this.packagesZipURL = packagesZipURL;
         this.rootDirectory = rootDirectory;
 
-        this.downloadDirectory = this.rootDirectory + File.separator + "download";
-        this.packagesFilePath = this.downloadDirectory + File.separator + "Packages.gz";
-        this.unzippedPackagesFilePath = this.downloadDirectory + File.separator + "Packages";
-        this.lastKnowDateStoreFilePath = this.downloadDirectory + File.separator + "last-known-modification-time";
+        String downloadDirectory = this.rootDirectory + File.separator + "download";
+        this.packagesFilePath = downloadDirectory + File.separator + "Packages.gz";
+        this.unzippedPackagesFilePath = downloadDirectory + File.separator + "Packages";
+        this.lastKnowDateStoreFilePath = downloadDirectory + File.separator + "last-known-modification-time";
 
-        if (new File(this.lastKnowDateStoreFilePath).exists()) {
-            String dateStr = FileUtils.readFileToString(new File(this.lastKnowDateStoreFilePath));
-            this.knownDate = Long.parseLong(dateStr);
-        }
+        new File(downloadDirectory).mkdirs();
+    }
 
-        new File(this.rootDirectory).mkdirs();
-        new File(this.downloadDirectory).mkdirs();
+    String getLastKnowDateStoreFilePath() {
+        return lastKnowDateStoreFilePath;
     }
 
     void setKnownDate(long knownDate) {
@@ -57,6 +54,11 @@ public class DebianRepository {
 
     public boolean hasChanges() {
         try {
+            if (new File(this.lastKnowDateStoreFilePath).exists()) {
+                String dateStr = FileUtils.readFileToString(new File(this.lastKnowDateStoreFilePath));
+                this.knownDate = Long.parseLong(dateStr);
+            }
+
             HttpURLConnection.setFollowRedirects(false);
             HttpURLConnection connection = (HttpURLConnection) new URL(packagesZipURL).openConnection();
             long newDate = connection.getLastModified();

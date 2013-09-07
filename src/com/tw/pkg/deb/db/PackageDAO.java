@@ -103,8 +103,11 @@ public class PackageDAO {
 
     public void updateIfRequired(List<DebianPackage> latestDebianPackages) throws Exception {
         Map<String, DebianPackage> packagesInDBMap = getPackagesInDBMap();
-        for (DebianPackage currentPackage : latestDebianPackages) {
+        int packageCount = latestDebianPackages.size();
+        for (int i = 0; i < packageCount; i++) {
+            DebianPackage currentPackage = latestDebianPackages.get(i);
             DebianPackage packageInDB = packagesInDBMap.get(currentPackage.getName());
+
             if (packageInDB != null) {
                 if (!DBHelper.equals(packageInDB, currentPackage)) {
                     System.out.println("updating package: " + currentPackage.getName());
@@ -114,6 +117,10 @@ public class PackageDAO {
             } else {
                 System.out.println("inserting new package: " + currentPackage.getName());
                 insert(currentPackage);
+            }
+
+            if (i % 1000 == 0) {
+                System.out.println("processed: " + i + " of " + packageCount);
             }
         }
     }

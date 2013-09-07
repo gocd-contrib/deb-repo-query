@@ -1,11 +1,13 @@
 package com.tw.pkg.deb.repo;
 
 import com.tw.pkg.deb.helper.VerificationHelper;
+import org.apache.commons.io.FileUtils;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ public class DebianRepositoryTest {
     public void shouldTellIfRepositoryHasChangesCorrectly() throws Exception {
         DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
         debianRepository.clearDownloadFolder();
+        FileUtils.deleteQuietly(new File(debianRepository.getLastKnowDateStoreFilePath()));
         debianRepository.setKnownDate(0L);
         Assert.assertEquals(true, debianRepository.hasChanges());
         Assert.assertEquals(false, debianRepository.hasChanges());
@@ -35,14 +38,6 @@ public class DebianRepositoryTest {
     @Test
     public void shouldFetchPackageDataCorrectly() throws Exception {
         DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
-        List<DebianPackage> allPackages = debianRepository.getAllPackages();
-        System.out.println(allPackages.size());
-    }
-
-    @Ignore
-    @Test
-    public void shouldFetchMultipleVersionsOfAPackageCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository("http://download01.thoughtworks.com/go/debian/contrib/Packages.gz", "/tmp/getPackagesForQuery");
         List<DebianPackage> allPackages = debianRepository.getAllPackages();
         System.out.println(allPackages.size());
     }

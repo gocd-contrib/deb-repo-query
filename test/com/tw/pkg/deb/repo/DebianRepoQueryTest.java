@@ -49,5 +49,7 @@ public class DebianRepoQueryTest {
         Assert.assertEquals("13.1.0-17153", debianPackages.get(3).getVersion());
         Assert.assertEquals("13.1.0-17152", debianPackages.get(4).getVersion());
         Assert.assertEquals("13.1.0-17152", debianPackages.get(5).getVersion());
+
+        packageDAO.deleteTableIfExists();
     }
 }

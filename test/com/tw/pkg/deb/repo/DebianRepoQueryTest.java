@@ -38,7 +38,7 @@ public class DebianRepoQueryTest {
 
         DebianPackage debPkg6 = VerificationHelper.getDebianPackage(1);
         debPkg6.setVersion("13.1.0-17152");
-        debPkg6.setArchitecture("architecture_" + 2);
+        debPkg6.setFilename("filename");
         packageDAO.insert(debPkg6);
 
         List<DebianPackage> debianPackages = debianRepoQuery.getDebianPackagesFor("name_1", null, null);

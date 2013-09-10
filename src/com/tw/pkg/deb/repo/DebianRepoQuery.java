@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.nio.channels.FileLock;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -91,9 +92,39 @@ public class DebianRepoQuery {
         }
 
         if (packages != null && packages.size() > 1) {
+            checkForInconsistentRevisions(packages);
             sortPackagesOnVersion(packages);
         }
         return packages;
+    }
+
+    private void checkForInconsistentRevisions(List<DebianPackage> packages) {
+        DebianPackage referencePackage = packages.get(0);
+        String referencePackageName = referencePackage.getName();
+        String referencePackageArchitecture = referencePackage.getArchitecture();
+        List<String> packagesFound = new ArrayList<String>();
+        packagesFound.add(referencePackage.getName() + " - " + referencePackage.getArchitecture());
+
+        for (int i = 1; i < packages.size(); i++) {
+            DebianPackage currentPackage = packages.get(i);
+            if (!currentPackage.getName().equals(referencePackageName) || !currentPackage.getArchitecture().equals(referencePackageArchitecture)) {
+                packagesFound.add(currentPackage.getName() + " - " + currentPackage.getArchitecture());
+            }
+        }
+        if (packagesFound.size() > 1) {
+            throw new RuntimeException("multiple package found: " + join(packagesFound));
+        }
+    }
+
+    private String join(List<String> packagesFound) {
+        String line = "";
+        for (String current : packagesFound) {
+            if (!line.trim().isEmpty()) {
+                line += ", ";
+            }
+            line += current;
+        }
+        return line;
     }
 
     private void sortPackagesOnVersion(List<DebianPackage> packages) {

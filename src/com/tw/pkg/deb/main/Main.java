@@ -34,7 +34,7 @@ public class Main {
         List<DebianPackage> debianPackagesForSpec = debianRepoQuery.getDebianPackagesFor(packageName, versionSpec, architecture);
         System.out.println("number of packages: " + debianPackagesForSpec.size());
         for (DebianPackage currentPackage : debianPackagesForSpec) {
-            System.out.println(currentPackage.getName() + " - " + currentPackage.getVersion() + " - " + currentPackage.getArchitecture());
+            System.out.println(currentPackage.getName() + " - " + currentPackage.getVersion() + " - " + currentPackage.getArchitecture() + " - " + currentPackage.getFilename());
         }
     }
 }

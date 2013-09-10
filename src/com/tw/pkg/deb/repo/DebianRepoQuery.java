@@ -18,13 +18,13 @@ public class DebianRepoQuery {
     public DebianRepoQuery(String packagesZipURL) throws Exception {
         this.rootDirectory = System.getProperty("java.io.tmpdir") + "deb-repo-query" + File.separator + packagesZipURL.hashCode();
         System.out.println("root dir: " + rootDirectory);
-        lockFilePath = rootDirectory + File.separator + "filelock";
+        this.lockFilePath = rootDirectory + File.separator + "filelock";
         String databaseFilePath = rootDirectory + File.separator + "cache.db";
 
         new File(this.rootDirectory).mkdirs();
         File lockFile = new File(lockFilePath);
         if (!lockFile.exists()) {
-            FileUtils.writeStringToFile(lockFile, "locked");
+            FileUtils.touch(lockFile);
         }
 
         this.debianRepository = new DebianRepository(packagesZipURL, rootDirectory);
@@ -37,8 +37,7 @@ public class DebianRepoQuery {
 
     public void updateCacheIfRequired() throws Exception {
         if (!debianRepository.isRepositoryValid()) {
-            System.out.println("invalid repository!");
-            System.exit(0);
+            new RuntimeException("invalid repository!");
         }
 
         FileLock lock = null;

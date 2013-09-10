@@ -43,10 +43,13 @@ public class DebianRepository {
 
     public boolean isRepositoryValid() {
         try {
+            URL urlObj = new URL(packagesZipURL);
+            // if http
             HttpURLConnection.setFollowRedirects(false);
-            HttpURLConnection connection = (HttpURLConnection) new URL(packagesZipURL).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
             connection.setRequestMethod("HEAD");
             return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
+            // if file
         } catch (Exception e) {
             throw new RuntimeException("could not check if repository is valid", e);
         }
@@ -59,9 +62,12 @@ public class DebianRepository {
                 this.knownDate = Long.parseLong(dateStr);
             }
 
+            URL urlObj = new URL(packagesZipURL);
+            // if http
             HttpURLConnection.setFollowRedirects(false);
-            HttpURLConnection connection = (HttpURLConnection) new URL(packagesZipURL).openConnection();
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
             long newDate = connection.getLastModified();
+            // if file
 
             if (newDate != knownDate) {
                 knownDate = newDate;

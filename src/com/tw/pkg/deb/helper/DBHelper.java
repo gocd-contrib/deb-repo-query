@@ -3,16 +3,6 @@ package com.tw.pkg.deb.helper;
 import com.tw.pkg.deb.repo.DebianPackage;
 
 public class DBHelper {
-    public static String join(String... args) {
-        String line = "";
-        for (String current : args) {
-            if (!line.isEmpty())
-                line += ", ";
-            line += getValue(current);
-        }
-        return line;
-    }
-
     public static String getValue(String input) {
         if (input != null) {
             return "'" + input + "'";

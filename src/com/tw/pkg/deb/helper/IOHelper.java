@@ -33,17 +33,9 @@ public class IOHelper {
 
     public static FileLock getLockOnFile(String filePath) throws Exception {
         RandomAccessFile file = new RandomAccessFile(filePath, "rw");
-        FileLock lock = null;
-        while (lock == null) {
-            System.out.println("trying to get file lock on: " + filePath);
-
-            lock = file.getChannel().lock();
-
-            if (lock == null) {
-                System.out.println("could not get file lock on: " + filePath + ". waiting for 10 sec...");
-                Thread.sleep(10 * 1000);
-            }
-        }
+        System.out.println("trying to get file lock on: " + filePath);
+        FileLock lock = file.getChannel().lock();
+        System.out.println("got file lock");
         return lock;
     }
 

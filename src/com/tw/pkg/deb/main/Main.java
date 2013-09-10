@@ -32,8 +32,9 @@ public class Main {
         DebianRepoQuery debianRepoQuery = new DebianRepoQuery(packagesZipURL);
         debianRepoQuery.updateCacheIfRequired();
         List<DebianPackage> debianPackagesForSpec = debianRepoQuery.getDebianPackagesFor(packageName, versionSpec, architecture);
+        System.out.println("number of packages: " + debianPackagesForSpec.size());
         for (DebianPackage currentPackage : debianPackagesForSpec) {
-            System.out.println(currentPackage.getName() + " - " + currentPackage.getVersion());
+            System.out.println(currentPackage.getName() + " - " + currentPackage.getVersion() + " - " + currentPackage.getArchitecture());
         }
     }
 }

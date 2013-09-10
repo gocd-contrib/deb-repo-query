@@ -44,12 +44,16 @@ public class DebianRepository {
     public boolean isRepositoryValid() {
         try {
             URL urlObj = new URL(packagesZipURL);
-            // if http
-            HttpURLConnection.setFollowRedirects(false);
-            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
-            connection.setRequestMethod("HEAD");
-            return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
-            // if file
+            String protocol = urlObj.getProtocol();
+            if (protocol.equals("http")) {
+                HttpURLConnection.setFollowRedirects(false);
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                connection.setRequestMethod("HEAD");
+                return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
+            } else if (protocol.equals("file")) {
+                return new File(urlObj.getPath()).exists();
+            }
+            throw new RuntimeException("unsupported protocol: " + protocol);
         } catch (Exception e) {
             throw new RuntimeException("could not check if repository is valid", e);
         }
@@ -63,11 +67,14 @@ public class DebianRepository {
             }
 
             URL urlObj = new URL(packagesZipURL);
-            // if http
-            HttpURLConnection.setFollowRedirects(false);
-            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
-            long newDate = connection.getLastModified();
-            // if file
+            long newDate = knownDate;
+            if (urlObj.getProtocol().equals("http")) {
+                HttpURLConnection.setFollowRedirects(false);
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                newDate = connection.getLastModified();
+            } else if (urlObj.getProtocol().equals("file")) {
+                newDate = new File(urlObj.getPath()).lastModified();
+            }
 
             if (newDate != knownDate) {
                 knownDate = newDate;

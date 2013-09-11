@@ -110,17 +110,11 @@ public class PackageDAO {
 
             if (packageInDB != null) {
                 if (!DBHelper.equals(packageInDB, currentPackage)) {
-                    System.out.println("updating package: " + currentPackage.getName());
                     currentPackage.setId(packageInDB.getId());
                     update(currentPackage);
                 }
             } else {
-                System.out.println("inserting new package: " + currentPackage.getName());
                 insert(currentPackage);
-            }
-
-            if (i % 1000 == 0) {
-                System.out.println("processed: " + i + " of " + packageCount);
             }
         }
     }

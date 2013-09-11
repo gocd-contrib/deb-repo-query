@@ -96,10 +96,8 @@ public class DebianRepository {
     private void downloadAndUnzipPackagesZip() throws Exception {
         clearDownloadFolder();
 
-        System.out.println("downloading Packages.gz...");
         IOHelper.fetchFile(packagesZipURL, packagesFilePath);
 
-        System.out.println("unzipping...");
         IOHelper.gunzip(packagesFilePath, unzippedPackagesFilePath);
     }
 
@@ -118,7 +116,6 @@ public class DebianRepository {
     }
 
     void readData(List<DebianPackage> packages, BufferedReader reader) throws IOException {
-        System.out.println("reading data...");
         String line;
         DebianPackage debPkg = new DebianPackage();
 

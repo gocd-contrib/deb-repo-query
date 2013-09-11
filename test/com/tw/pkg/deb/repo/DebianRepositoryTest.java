@@ -39,7 +39,7 @@ public class DebianRepositoryTest {
     public void shouldFetchPackageDataCorrectly() throws Exception {
         DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-arm64/Packages.gz", "/tmp/getPackagesForQuery");
         List<DebianPackage> allPackages = debianRepository.getAllPackages();
-        System.out.println(allPackages.size());
+        Assert.assertEquals(5800, allPackages.size());
     }
 
     @Test

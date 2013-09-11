@@ -24,7 +24,6 @@ public class DebianRepoQuery {
         else
             debRepoQueryDirPath = tempDir + File.separator + "deb-repo-query";
         this.rootDirectory = debRepoQueryDirPath + File.separator + packagesZipURL.hashCode();
-        System.out.println("root dir: " + this.rootDirectory);
         this.lockFilePath = this.rootDirectory + File.separator + "filelock";
         String databaseFilePath = this.rootDirectory + File.separator + "cache.db";
 
@@ -52,11 +51,8 @@ public class DebianRepoQuery {
             lock = IOHelper.getLockOnFile(lockFilePath);
 
             if (debianRepository.hasChanges()) {
-                System.out.println("repository has changes. updating cache...");
-
                 updateCache();
             } else {
-                System.out.println("repository has not changed since last run...");
             }
         } finally {
             IOHelper.releaseFileLock(lock);
@@ -66,23 +62,15 @@ public class DebianRepoQuery {
     private void updateCache() throws Exception {
         List<DebianPackage> allPackages = debianRepository.getAllPackages();
         int packageCount = allPackages.size();
-        System.out.println("repository packages count: " + packageCount);
 
         packageDAO.createTableIfNotExists();
         if (packageDAO.getPackageCount() > 0) {
-            System.out.println("cache found. updating cache with new data...");
             packageDAO.updateIfRequired(allPackages);
         } else {
-            System.out.println("no cache found. populating all data...");
             for (int i = 0; i < allPackages.size(); i++) {
                 DebianPackage currentPackage = allPackages.get(i);
                 packageDAO.insert(currentPackage);
-
-                if (i % 1000 == 0) {
-                    System.out.println("processed: " + i + " of " + packageCount);
-                }
             }
-            System.out.println("finished processing all packages...");
         }
     }
 

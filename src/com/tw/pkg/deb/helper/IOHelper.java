@@ -33,17 +33,13 @@ public class IOHelper {
 
     public static FileLock getLockOnFile(String filePath) throws Exception {
         RandomAccessFile file = new RandomAccessFile(filePath, "rw");
-        System.out.println("trying to get file lock on: " + filePath);
         FileLock lock = file.getChannel().lock();
-        System.out.println("got file lock");
         return lock;
     }
 
     public static void releaseFileLock(FileLock lock) throws Exception {
         if (lock != null) {
             lock.release();
-
-            System.out.println("file lock released.");
         }
     }
 }

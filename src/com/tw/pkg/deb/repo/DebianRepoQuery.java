@@ -17,7 +17,13 @@ public class DebianRepoQuery {
     private PackageDAO packageDAO;
 
     public DebianRepoQuery(String packagesZipURL) throws Exception {
-        this.rootDirectory = System.getProperty("java.io.tmpdir") + "deb-repo-query" + File.separator + packagesZipURL.hashCode();
+        String tempDir = System.getProperty("java.io.tmpdir");
+        String debRepoQueryDirPath = null;
+        if (tempDir.endsWith("/"))
+            debRepoQueryDirPath = tempDir + "deb-repo-query";
+        else
+            debRepoQueryDirPath = tempDir + File.separator + "deb-repo-query";
+        this.rootDirectory = debRepoQueryDirPath + File.separator + packagesZipURL.hashCode();
         System.out.println("root dir: " + this.rootDirectory);
         this.lockFilePath = this.rootDirectory + File.separator + "filelock";
         String databaseFilePath = this.rootDirectory + File.separator + "cache.db";

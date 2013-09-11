@@ -15,18 +15,18 @@ import java.util.List;
 public class DebianRepositoryTest {
     @Test
     public void shouldCheckDebainReporitoryValidityCorrectly() throws Exception {
-        DebianRepository debianRepository1 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64/Packages.gz",
+        DebianRepository debianRepository1 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-arm64/Packages.gz",
                 "/tmp/getPackagesForQuery");
         Assert.assertEquals(true, debianRepository1.isRepositoryValid());
 
-        DebianRepository debianRepository2 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/invalid/main/binary-amd64/Packages.gz",
+        DebianRepository debianRepository2 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/invalid/main/binary-arm64/Packages.gz",
                 "/tmp/getPackagesForQuery");
         Assert.assertEquals(false, debianRepository2.isRepositoryValid());
     }
 
     @Test
     public void shouldTellIfRepositoryHasChangesCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-arm64/Packages.gz", "/tmp/getPackagesForQuery");
         debianRepository.clearDownloadFolder();
         FileUtils.deleteQuietly(new File(debianRepository.getLastKnowDateStoreFilePath()));
         debianRepository.setKnownDate(0L);
@@ -37,7 +37,7 @@ public class DebianRepositoryTest {
     @Ignore
     @Test
     public void shouldFetchPackageDataCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-arm64/Packages.gz", "/tmp/getPackagesForQuery");
         List<DebianPackage> allPackages = debianRepository.getAllPackages();
         System.out.println(allPackages.size());
     }

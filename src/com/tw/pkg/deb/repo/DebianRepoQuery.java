@@ -23,7 +23,8 @@ public class DebianRepoQuery {
             debRepoQueryDirPath = tempDir + "deb-repo-query";
         else
             debRepoQueryDirPath = tempDir + File.separator + "deb-repo-query";
-        this.rootDirectory = debRepoQueryDirPath + File.separator + packagesZipURL.hashCode();
+        String cacheFolderPath = new Long(Math.abs(packagesZipURL.hashCode())).toString();
+        this.rootDirectory = debRepoQueryDirPath + File.separator + cacheFolderPath;
         this.lockFilePath = this.rootDirectory + File.separator + "filelock";
         String databaseFilePath = this.rootDirectory + File.separator + "cache.db";
 
@@ -35,6 +36,8 @@ public class DebianRepoQuery {
 
         this.debianRepository = new DebianRepository(packagesZipURL, this.rootDirectory);
         this.packageDAO = new PackageDAO(databaseFilePath);
+
+        this.packageDAO.createTableIfNotExists();
     }
 
     PackageDAO getPackageDAO() {
@@ -62,7 +65,6 @@ public class DebianRepoQuery {
     private void updateCache() throws Exception {
         List<DebianPackage> allPackages = debianRepository.getAllPackages();
 
-        packageDAO.createTableIfNotExists();
         if (packageDAO.getPackageCount() > 0) {
             packageDAO.updateIfRequired(allPackages);
         } else {

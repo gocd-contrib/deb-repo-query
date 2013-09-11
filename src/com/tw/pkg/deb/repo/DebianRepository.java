@@ -68,11 +68,12 @@ public class DebianRepository {
 
             URL urlObj = new URL(packagesZipURL);
             long newDate = knownDate;
-            if (urlObj.getProtocol().equals("http")) {
+            String protocol = urlObj.getProtocol();
+            if (protocol.equals("http")) {
                 HttpURLConnection.setFollowRedirects(false);
                 HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
                 newDate = connection.getLastModified();
-            } else if (urlObj.getProtocol().equals("file")) {
+            } else if (protocol.equals("file")) {
                 newDate = new File(urlObj.getPath()).lastModified();
             }
 

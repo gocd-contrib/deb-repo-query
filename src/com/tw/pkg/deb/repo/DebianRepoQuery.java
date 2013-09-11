@@ -43,7 +43,7 @@ public class DebianRepoQuery {
 
     public void updateCacheIfRequired() throws Exception {
         if (!debianRepository.isRepositoryValid()) {
-            new RuntimeException("invalid repository!");
+            throw new RuntimeException("invalid repository!");
         }
 
         FileLock lock = null;
@@ -61,7 +61,6 @@ public class DebianRepoQuery {
 
     private void updateCache() throws Exception {
         List<DebianPackage> allPackages = debianRepository.getAllPackages();
-        int packageCount = allPackages.size();
 
         packageDAO.createTableIfNotExists();
         if (packageDAO.getPackageCount() > 0) {

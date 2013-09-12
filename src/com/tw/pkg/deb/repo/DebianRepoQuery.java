@@ -37,7 +37,14 @@ public class DebianRepoQuery {
         this.debianRepository = new DebianRepository(packagesZipURL, this.rootDirectory);
         this.packageDAO = new PackageDAO(databaseFilePath);
 
-        this.packageDAO.createTableIfNotExists();
+        FileLock lock = null;
+        try {
+            lock = IOHelper.getLockOnFile(this.lockFilePath);
+
+            this.packageDAO.createTableIfNotExists();
+        } finally {
+            IOHelper.releaseFileLock(lock);
+        }
     }
 
     PackageDAO getPackageDAO() {

@@ -1,5 +1,5 @@
 use dist/deb-repo-query-with-dependencies.jar to query debian repository.
-usage: java -jar deb-repo-query-with-dependencies.jar <uri> [<package-spec>] [<architecture>]
-example: java -jar db-repo-query-with-dependencies.jar http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64 gcc
+usage: java -jar deb-repo-query-1.0.one-jar.jar <uri> [<package-spec>] [<architecture>]
+example: java -jar deb-repo-query-1.0.one-jar.jar http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-amd64 gcc
 
-use dist/deb-repo-query.jar to use it as a library with your project. you will need to add commons-io-2.4 & sqlite-jdbc-3.7.2 jars along with this jar.
+use dist/deb-repo-query-1.0.jar to use it as a library with your project. you will need to add commons-io-2.4 & sqlite-jdbc-3.7.2 jars along with this jar.

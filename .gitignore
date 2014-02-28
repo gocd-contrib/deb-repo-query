@@ -35,10 +35,21 @@
 ehthumbs.db
 Thumbs.db
 
-# Eclipse
+# Eclipse #
+##########
 .classpath
 .project
 .settings/
-*.iml
+
+# IntelliJ #
+###########
 .idea/
+out/
+*.ipr
+*.iws
+*.iml
+
+# App #
+######
 sample.db
+target/

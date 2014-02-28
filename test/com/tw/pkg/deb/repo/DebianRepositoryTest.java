@@ -15,18 +15,16 @@ import java.util.List;
 public class DebianRepositoryTest {
     @Test
     public void shouldCheckDebainReporitoryValidityCorrectly() throws Exception {
-        DebianRepository debianRepository1 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-arm64/Packages.gz",
-                "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository1 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
         Assert.assertEquals(true, debianRepository1.isRepositoryValid());
 
-        DebianRepository debianRepository2 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/invalid/main/binary-arm64/Packages.gz",
-                "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository2 = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/invalid/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
         Assert.assertEquals(false, debianRepository2.isRepositoryValid());
     }
 
     @Test
     public void shouldTellIfRepositoryHasChangesCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-arm64/Packages.gz", "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository = new DebianRepository("http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
         debianRepository.clearDownloadFolder();
         FileUtils.deleteQuietly(new File(debianRepository.getLastKnowDateStoreFilePath()));
         debianRepository.setKnownDate(0L);
@@ -46,7 +44,7 @@ public class DebianRepositoryTest {
     public void shouldReadPackageDataCorrectly() throws Exception {
         DebianRepository debianRepository = new DebianRepository(null, "/tmp/getPackagesForQuery");
         List<DebianPackage> debianPackages = new ArrayList<DebianPackage>();
-        debianRepository.readData(debianPackages, new BufferedReader(new FileReader("test-data/data1.txt")));
+        debianRepository.readData(debianPackages, new BufferedReader(new FileReader(new File(getClass().getResource("/test-data/data1.txt").toURI()))));
         VerificationHelper.assertCorrectnessOfDebianPackage(debianPackages.get(0), 1);
         VerificationHelper.assertCorrectnessOfDebianPackage(debianPackages.get(1), 2);
     }
@@ -55,7 +53,7 @@ public class DebianRepositoryTest {
     public void shouldReadPackageDataWithMultilineDescriptionCorrectly() throws Exception {
         DebianRepository debianRepository = new DebianRepository(null, "/tmp/getPackagesForQuery");
         List<DebianPackage> debianPackages = new ArrayList<DebianPackage>();
-        debianRepository.readData(debianPackages, new BufferedReader(new FileReader("test-data/data2.txt")));
+        debianRepository.readData(debianPackages, new BufferedReader(new FileReader(new File(getClass().getResource("/test-data/data2.txt").toURI()))));
 
         Assert.assertEquals("name_1", debianPackages.get(0).getName());
 

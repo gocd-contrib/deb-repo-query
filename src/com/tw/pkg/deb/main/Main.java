@@ -8,8 +8,8 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws Exception {
         if (args.length < 2) {
-            System.out.println("usage: java -jar deb-repo-query-with-dependencies.jar <uri> [<version-spec>] [<architecture>]");
-            System.out.println("sample: java -jar deb-repo-query-with-dependencies.jar http://in.archive.ubuntu.com/ubuntu/dists/hardy/main/binary-amd64 gcc [4.4%] [amd64]");
+            System.out.println("usage: java -jar deb-repo-query-1.0.one-jar.jar <uri> [<version-spec>] [<architecture>]");
+            System.out.println("sample: java -jar deb-repo-query-1.0.one-jar.jar http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-amd64 gcc [4.4%] [amd64]");
             System.exit(0);
         }
 
@@ -33,6 +33,7 @@ public class Main {
         debianRepoQuery.updateCacheIfRequired();
         List<DebianPackage> debianPackagesForSpec = debianRepoQuery.getDebianPackagesFor(packageName, versionSpec, architecture);
         System.out.println("number of packages: " + debianPackagesForSpec.size());
+        System.out.println("package name - version - architecture - filename");
         for (DebianPackage currentPackage : debianPackagesForSpec) {
             System.out.println(currentPackage.getName() + " - " + currentPackage.getVersion() + " - " + currentPackage.getArchitecture() + " - " + currentPackage.getFilename());
         }

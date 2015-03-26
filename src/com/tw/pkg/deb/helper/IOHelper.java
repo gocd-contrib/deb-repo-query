@@ -3,18 +3,29 @@ package com.tw.pkg.deb.helper;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.FileLock;
 import java.nio.channels.ReadableByteChannel;
 import java.util.zip.GZIPInputStream;
 
+import org.apache.commons.codec.binary.Base64;
+
 public class IOHelper {
     public static void fetchFile(String url, String filePath) throws Exception {
         URL urlObj = new URL(url);
-        ReadableByteChannel rbc = Channels.newChannel(urlObj.openStream());
+        HttpURLConnection.setFollowRedirects(false);
+        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+        if (urlObj.getUserInfo() != null && !urlObj.getUserInfo().isEmpty()){
+        	String encoding = Base64.encodeBase64String(urlObj.getUserInfo().getBytes());
+        	connection.setRequestProperty("Authorization", "Basic " + encoding);
+        }
+        ReadableByteChannel rbc = Channels.newChannel(connection.getInputStream());
         FileOutputStream fos = new FileOutputStream(filePath);
         fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        rbc.close();
+        fos.close();
     }
 
     public static void gunzip(String inputGzipFile, String outputFile) throws Exception {

@@ -1,8 +1,5 @@
 package com.tw.pkg.deb.repo;
 
-import com.tw.pkg.deb.helper.IOHelper;
-import org.apache.commons.io.FileUtils;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +8,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
+
+import com.tw.pkg.deb.helper.IOHelper;
 
 public class DebianRepository {
     private String packagesZipURL;
@@ -45,10 +47,14 @@ public class DebianRepository {
         try {
             URL urlObj = new URL(packagesZipURL);
             String protocol = urlObj.getProtocol();
-            if (protocol.equals("http")) {
+            if (protocol.equals("http") || protocol.equals("https")) {
                 HttpURLConnection.setFollowRedirects(false);
                 HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
                 connection.setRequestMethod("HEAD");
+                if (urlObj.getUserInfo() != null && !urlObj.getUserInfo().isEmpty()){
+                	String encoding = Base64.encodeBase64String(urlObj.getUserInfo().getBytes());
+                	connection.setRequestProperty("Authorization", "Basic " + encoding);
+                }
                 return (connection.getResponseCode() == HttpURLConnection.HTTP_OK);
             } else if (protocol.equals("file")) {
                 return new File(urlObj.getPath()).exists();
@@ -69,9 +75,13 @@ public class DebianRepository {
             URL urlObj = new URL(packagesZipURL);
             long newDate = knownDate;
             String protocol = urlObj.getProtocol();
-            if (protocol.equals("http")) {
+            if (protocol.equals("http") || protocol.equals("https")) {
                 HttpURLConnection.setFollowRedirects(false);
                 HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                if (urlObj.getUserInfo() != null && !urlObj.getUserInfo().isEmpty()){
+                	String encoding = Base64.encodeBase64String(urlObj.getUserInfo().getBytes());
+                	connection.setRequestProperty("Authorization", "Basic " + encoding);
+                }
                 newDate = connection.getLastModified();
             } else if (protocol.equals("file")) {
                 newDate = new File(urlObj.getPath()).lastModified();

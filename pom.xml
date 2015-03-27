@@ -31,13 +31,13 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
-	    </dependency>
-	
-		<dependency>
-			<groupId>commons-codec</groupId>
-			<artifactId>commons-codec</artifactId>
-			<version>1.10</version>
-		</dependency>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+        </dependency>
 
         <!-- test dependencies -->
         <dependency>
@@ -111,7 +111,7 @@
                         <configuration>
                             <tasks>
                                 <delete dir="dist"/>
-                                <mkdir dir="dist" />
+                                <mkdir dir="dist"/>
 
                                 <copy todir="${project.basedir}/dist">
                                     <fileset dir="${project.basedir}/target">

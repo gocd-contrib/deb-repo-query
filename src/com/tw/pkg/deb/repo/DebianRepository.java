@@ -139,7 +139,13 @@ public class DebianRepository {
             } else {
                 String parts[] = line.split(": ");
                 String data = parts[0];
-                String value = parts[1];
+                //Set a default value of empty sting for cases where no value is provided,
+                //such as empty Source: with custom packages
+                String value = "";
+                if (parts.length > 1) {
+                    value = parts[1];
+                }
+                
 
                 if (data.equalsIgnoreCase("Package")) {
                     debPkg.setName(value);

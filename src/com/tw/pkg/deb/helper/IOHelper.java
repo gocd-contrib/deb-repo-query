@@ -1,5 +1,6 @@
 package com.tw.pkg.deb.helper;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.RandomAccessFile;
@@ -11,10 +12,16 @@ import java.nio.channels.ReadableByteChannel;
 import java.util.zip.GZIPInputStream;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FileUtils;
 
 public class IOHelper {
     public static void fetchFile(String url, String filePath) throws Exception {
         URL urlObj = new URL(url);
+        if (urlObj.getProtocol().equals("file")) {
+            FileUtils.copyFile(new File(urlObj.getFile()), new File(filePath));
+            return;
+        }
+
         HttpURLConnection.setFollowRedirects(false);
         HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
         if (urlObj.getUserInfo() != null && !urlObj.getUserInfo().isEmpty()){

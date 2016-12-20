@@ -22,16 +22,16 @@ public class DebianRepositoryTest {
 
     @Test
     public void shouldCheckDebainReporitoryValidityCorrectly() throws Exception {
-        DebianRepository debianRepository1 = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository1 = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/Packages.gz", temporaryFolder.getRoot().getAbsolutePath());
         assertEquals(true, debianRepository1.isRepositoryValid());
 
-        DebianRepository debianRepository2 = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/INVALID/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository2 = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/INVALID/main/binary-amd64/Packages.gz", temporaryFolder.getRoot().getAbsolutePath());
         assertEquals(false, debianRepository2.isRepositoryValid());
     }
 
     @Test
     public void shouldTellIfRepositoryHasChangesCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/Packages.gz", temporaryFolder.getRoot().getAbsolutePath());
         debianRepository.clearDownloadFolder();
         FileUtils.deleteQuietly(new File(debianRepository.getLastKnowDateStoreFilePath()));
         debianRepository.setKnownDate(0L);
@@ -42,7 +42,7 @@ public class DebianRepositoryTest {
     @Ignore
     @Test
     public void shouldFetchPackageDataCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/Packages.gz", "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository = new DebianRepository("http://archive.ubuntu.com/ubuntu/dists/xenial/main/binary-amd64/Packages.gz", temporaryFolder.getRoot().getAbsolutePath());
         List<DebianPackage> allPackages = debianRepository.getAllPackages();
         assertEquals(5800, allPackages.size());
     }
@@ -61,7 +61,7 @@ public class DebianRepositoryTest {
 
     @Test
     public void shouldReadPackageDataCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository(null, "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository = new DebianRepository(null, temporaryFolder.getRoot().getAbsolutePath());
         List<DebianPackage> debianPackages = new ArrayList<DebianPackage>();
         debianRepository.readData(debianPackages, new BufferedReader(new FileReader(new File(getClass().getResource("/test-data/data1.txt").toURI()))));
         VerificationHelper.assertCorrectnessOfDebianPackage(debianPackages.get(0), 1);
@@ -70,7 +70,7 @@ public class DebianRepositoryTest {
 
     @Test
     public void shouldReadPackageDataWithMultilineDescriptionCorrectly() throws Exception {
-        DebianRepository debianRepository = new DebianRepository(null, "/tmp/getPackagesForQuery");
+        DebianRepository debianRepository = new DebianRepository(null, temporaryFolder.getRoot().getAbsolutePath());
         List<DebianPackage> debianPackages = new ArrayList<DebianPackage>();
         debianRepository.readData(debianPackages, new BufferedReader(new FileReader(new File(getClass().getResource("/test-data/data2.txt").toURI()))));
 

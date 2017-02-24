@@ -1,14 +1,14 @@
 build:
 ```
-mvn clean install -DskipTests
+mvn clean install
 ```
 
-usage:
+Usage:
 ```
 java -jar target/deb-repo-query-1.1.one-jar.jar <uri> [<package-spec>] [<architecture>]
 ```
 
-example:
+Example:
 ```
 java -jar target/deb-repo-query-1.1.one-jar.jar http://in.archive.ubuntu.com/ubuntu/dists/saucy/main/binary-amd64 gcc
 ```
@@ -18,7 +18,7 @@ use target/deb-repo-query-1.1.jar to use it as a library with your project. (Not
 
 ## Contributing
 
-We encourage you to contribute to Go. For information on contributing to this project, please see our [contributor's guide](http://www.go.cd/contribute).
+We encourage you to contribute to GoCD. For information on contributing to this project, please see the [contributor's guide](http://www.go.cd/contribute).
 A lot of useful information like links to user documentation, design documentation, mailing lists etc. can be found in the [resources](http://www.go.cd/community/resources.html) section.
 
 ## License

@@ -96,7 +96,7 @@
 
             <plugin>
                 <artifactId>maven-antrun-plugin</artifactId>
-                <version>1.7</version>
+                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>copy-test-agent</id>
